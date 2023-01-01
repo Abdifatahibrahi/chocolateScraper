@@ -4,13 +4,14 @@ import scrapy
 class ChocolatespiderSpider(scrapy.Spider):
     name = 'chocolatespider'
     allowed_domains = ['chocolate.co.uk']
-    start_urls = ['http://chocolate.co.uk/collections/all']
+    start_urls = ['https://www.chocolate.co.uk/collections/winter-sale']
 
     def parse(self, response):
-        products = response.css('.product-item ').getall()
+        products = response.css('.product-item-meta')
         for product in products:
-            product_name = product.css('product-item-meta a::text').get()
-            product_link = product.css('product-item-meta a::attr(href)').get()
+            product_link = product.css('a::attr(href)').get()
+            product_name = product.css('a::text').get()
+            
 
             yield {
                 'product_name': product_name,
